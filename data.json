@@ -1,0 +1,16 @@
+[
+	{
+		"UUID": "0255f4ad-4281-40fc-b9f5-1af01bb99bea",
+		"name": "Habit tracker",
+		"description": "App to track habits",
+		"version": "1.0.0",
+		"createdAt": "2024-09-02"
+	},
+	{
+		"UUID": "e73d4c8f-3d8e-44e6-a429-7c5fe02539cb",
+		"name": "Nebula Notes",
+		"description": "Note taking app with cosmic theme",
+		"version": "1.2.0",
+		"createdAt": "2024-09-02"
+	}
+]
