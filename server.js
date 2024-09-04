@@ -17,28 +17,6 @@ app.use("/static/*", serveStatic({ root: "./" }));
 // Initialiserer en liste med vaner (habits)
 const projects = [];
 
-app.get("/json", async (c) => {
-  const data = await fs.readFile('data.json', 'utf8')
-  const dataAsJson = JSON.parse(data)
-  return c.json(dataAsJson);
-});
-
-// Definerer en POST-rute for å legge til nye vaner
-app.post("/add", async (c) => {
-  const newHabit = await c.req.json();
-  console.log(newHabit);
-  // Legger til den nye vanen i listen med en unik ID og tidsstempel
-  projects.push({ id: crypto.randomUUID(), createdAt: new Date(), ...newHabit });
-
-  // Returnerer den oppdaterte listen med vaner og en 201 (Created) statuskode
-  return c.json(projects, { status: 201 });
-});
-
-// Definerer en GET-rute for å hente alle vaner
-app.get("/", (c) => {
-  return c.json(projects);
-});
-
 // Definerer porten serveren skal lytte på
 const port = 3999;
 
