@@ -17,6 +17,25 @@ app.use("/static/*", serveStatic({ root: "./" }));
 // Initialiserer en liste med vaner (habits)
 const projects = [];
 
+// Endpoint to fetch from json file
+app.get("/json", async (c) => {
+  const data = await fs.readFile('data.json', 'utf8')
+  const dataAsJson = JSON.parse(data)
+  return c.json(dataAsJson)
+})
+
+app.post("/submit-project", async (c) => {
+  const newProject = await c.req.json();
+  console.log(newProject);
+
+  projects.push({ UUID: crypto.randomUUID(), createdAt: new Date(), ...newProject});
+  return c.json(projects, { status: 201 });
+})
+
+app.get("/", (c) => {
+  return c.json(projects);
+})
+
 // Definerer porten serveren skal lytte på
 const port = 3999;
 
