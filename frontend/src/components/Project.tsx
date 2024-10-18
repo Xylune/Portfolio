@@ -4,7 +4,7 @@ import { Project as ProjectProps } from "./types";
 export default function Project(
     props: Readonly<PropsWithChildren<ProjectProps>>
 ) {
-    const { name, description, version, children } = props;
+    const { name, description, version, tags, children } = props;
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -15,6 +15,7 @@ export default function Project(
             <h3>{name}</h3>
             <p>{description}</p>
             <p>{version}</p>
+            <p>{(tags ?? []).join(", ")}</p>
             {isHovered && children}
         </li>
     );

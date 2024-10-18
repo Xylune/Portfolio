@@ -10,6 +10,8 @@ const projects = [
         name: "Habit tracker",
         description: "Track your daily habits",
         version: "1.0.0",
+        tags: ["health", "productivity"],
+        visibility: "Public",
         createdAt: new Date().toISOString(),
     },
     {
@@ -17,6 +19,8 @@ const projects = [
         name: "Weather App",
         description: "Get the latest weather updates",
         version: "1.0.0",
+        tags: ["weather", "utilities"],
+        visibility: "Public",
         createdAt: new Date().toISOString(),
     },
     {
@@ -24,6 +28,8 @@ const projects = [
         name: "Task Manager",
         description: "Manage your tasks efficiently",
         version: "1.0.0",
+        tags: ["productivity"],
+        visibility: "Public",
         createdAt: new Date().toISOString(),
     },
     {
@@ -31,6 +37,8 @@ const projects = [
         name: "Recipe Book",
         description: "Store and share your favorite recipes",
         version: "1.0.0",
+        tags: ["food", "cooking"],
+        visibility: "Public",
         createdAt: new Date().toISOString(),
     },
     {
@@ -38,35 +46,51 @@ const projects = [
         name: "Fitness Tracker",
         description: "Track your fitness activities and goals",
         version: "1.0.0",
+        tags: ["health", "fitness"],
+        visibility: "Public",
         createdAt: new Date().toISOString(),
     }
 ];
 
 app.use("*", cors());
 
-app.get("/", (c) => {
+app.get("/api/projects", (c) => {
     return c.json(projects);
 });
 
-app.post("/", async (c) => {
+app.post("/api/projects", async (c) => {
     const project = await c.req.json();
     projects.push({
         UUID: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
         ...project,
     });
-    return c.json(project, 201);
+    return c.json(projects, { status:201 });
 });
 
-app.delete("/:UUID", (c) => {
+app.delete("api/projects/:UUID", (c) => {
     const { UUID } = c.req.param();
     const index = projects.findIndex((project) => project.UUID === UUID);
     if (index !== -1) {
         projects.splice(index, 1);
         return c.json({ message: "Project deleted" });
     }
-    return c.json({ message: "Project not found" }, 404);
+    return c.json({ message: "Project not found" }, { status: 404 });
 });
+
+app.patch("api/projects/:UUID", async (c) => {
+    const { UUID } = c.req.param();
+    const project = await c.req.json();
+    const index = projects.findIndex((project) => project.UUID === UUID);
+    if (index !== -1) {
+        projects[index] = {
+            ...projects[index],
+            ...project,
+        };
+        return c.json(projects, { status: 200 });
+    }
+    return c.json({ message: "Project not found" }, { status: 404 });
+}); 
 
 const port = 3999;
 console.log(`Server is running on port ${port}`);

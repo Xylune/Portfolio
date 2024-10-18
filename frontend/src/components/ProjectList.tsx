@@ -4,9 +4,14 @@ import { Project as ProjectProps } from "./types";
 type ProjectListProps = {
     projects: ProjectProps[];
     onDelete: (UUID: string) => void;
+    onEdit: (project: ProjectProps) => void;
 };
 
-export default function ProjectList({ projects, onDelete }: ProjectListProps) {
+export default function ProjectList({
+    projects,
+    onDelete,
+    onEdit,
+}: ProjectListProps) {
     return (
         <section id="projectListSection">
             <h2>My projects</h2>
@@ -23,6 +28,12 @@ export default function ProjectList({ projects, onDelete }: ProjectListProps) {
                                 onClick={() => onDelete(project.UUID)}
                             >
                                 <i className="fas fa-trash-alt"></i>
+                            </button>
+                            <button
+                                id="edit-btn"
+                                onClick={() => onEdit(project)}
+                            >
+                                <i className="fas fa-edit"></i>
                             </button>
                         </Project>
                     ))
