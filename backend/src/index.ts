@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { projectController } from "./features/projects/project.controller";
 
 const app = new Hono();
 
@@ -91,6 +92,8 @@ app.patch("api/projects/:UUID", async (c) => {
     }
     return c.json({ message: "Project not found" }, { status: 404 });
 }); 
+
+app.route("/v3/projects", projectController);
 
 const port = 3999;
 console.log(`Server is running on port ${port}`);

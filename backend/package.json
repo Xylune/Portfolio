@@ -1,15 +1,21 @@
 {
-  "name": "backend",
-  "scripts": {
-    "dev": "tsx watch src/index.ts"
-  },
-  "dependencies": {
-    "@hono/node-server": "^1.13.1",
-    "backend": "file:",
-    "hono": "^4.6.3"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.17",
-    "tsx": "^4.7.1"
-  }
+    "name": "backend",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "db:setup": "tsx src/db/index.ts"
+    },
+    "dependencies": {
+        "@hono/node-server": "^1.13.1",
+        "@t3-oss/env-core": "^0.11.1",
+        "@types/better-sqlite3": "^7.6.11",
+        "backend": "file:",
+        "better-sqlite3": "^11.5.0",
+        "dotenv": "^16.4.5",
+        "hono": "^4.6.6",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.17",
+        "tsx": "^4.7.1"
+    }
 }
