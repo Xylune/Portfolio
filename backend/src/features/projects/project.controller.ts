@@ -49,6 +49,7 @@ export const createProjectController = (projectService: ProjectService) => {
     app.patch("/:id", async (c) => {
         const id = c.req.param("id");
         const project = await c.req.json();
+        console.log("Received data:", project);
 
         const result = await projectService.update({id ,...project});
 

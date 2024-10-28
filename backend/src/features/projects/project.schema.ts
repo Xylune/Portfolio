@@ -21,7 +21,7 @@ export const projectFromDBSchema = z.object({
     version: z.string(),
     tags: z.string(),
     status: z.enum(["draft", "published"]),
-    public: z.boolean(),
+    public: z.number(),
     created_at: z.string(),
     updated_at: z.string(),
     published_at: z.string().datetime().nullable(),

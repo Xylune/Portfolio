@@ -101,7 +101,7 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
                 project.version,
                 project.tags,
                 project.status,
-                project.public? 1 : 0,
+                project.public,
                 project.created_at,
                 project.updated_at,
                 project.published_at
@@ -161,7 +161,7 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
                 project.version,
                 project.tags,
                 project.status,
-                project.public? 1 : 0,
+                project.public,
                 project.updated_at,
                 project.published_at,
                 project.id

@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import AddProjectForm from "./components/AddProjectForm";
 import ProjectList from "./components/ProjectList";
 import EditProjectForm from "./components/EditProjectForm";
-import { Project as ProjectProps } from "./components/types";
+import { AddProjectProps, Project as ProjectProps } from "./components/types";
 import { ofetch } from "ofetch";
+import { endpointsV3 } from "./config/urls";
 
 function App() {
     const [projects, setProjects] = useState<ProjectProps[]>([]);
@@ -13,37 +14,34 @@ function App() {
         null
     );
 
+    const fetchProjects = async () => {
+        try {
+            setLoading(true);
+            const data: ProjectProps[] = await ofetch(endpointsV3);
+            setProjects(data);
+        } catch (error) {
+            console.error("Failed to fetch projects;", error);
+            setError("Failed to fetch projects");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                setLoading(true);
-                const data: ProjectProps[] = await ofetch(
-                    "http://localhost:3999/api/projects"
-                );
-                setProjects(data);
-            } catch (error) {
-                console.error("Failed to fetch projects;", error);
-                setError("Failed to fetch projects");
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchProjects();
     }, []);
 
-    const handleAddProject = async (project: ProjectProps) => {
+    const handleAddProject = async (project: AddProjectProps) => {
         try {
-            const projects: ProjectProps[] = await ofetch(
-                "http://localhost:3999/api/projects",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(project),
-                }
-            );
-            setProjects(projects);
+            const result: ProjectProps[] = await ofetch(endpointsV3, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(project),
+            });
+            console.log(result);
+            fetchProjects();
         } catch (error) {
             console.error("Failed to add project:", error);
         }
@@ -51,12 +49,10 @@ function App() {
 
     const handleDeleteProject = async (UUID: string) => {
         try {
-            await ofetch(`http://localhost:3999/api/projects/${UUID}`, {
+            await ofetch(`${endpointsV3}/${UUID}`, {
                 method: "DELETE",
             });
-            setProjects((prevProjects) =>
-                prevProjects.filter((project) => project.UUID !== UUID)
-            );
+            fetchProjects();
         } catch (error) {
             console.error("Failed to delete project:", error);
         }
@@ -64,8 +60,8 @@ function App() {
 
     const handleSave = async (updatedProject: ProjectProps) => {
         try {
-            const projects: ProjectProps[] = await ofetch(
-                `http://localhost:3999/api/projects/${updatedProject.UUID}`,
+            const result = await ofetch(
+                `${endpointsV3}/${updatedProject.UUID}`,
                 {
                     method: "PATCH",
                     headers: {
@@ -74,8 +70,8 @@ function App() {
                     body: JSON.stringify(updatedProject),
                 }
             );
-
-            setProjects(projects);
+            console.log(result);
+            fetchProjects();
         } catch (error) {
             console.error("Failed to save project:", error);
         } finally {

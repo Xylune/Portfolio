@@ -14,10 +14,14 @@ export default function EditProjectForm({
 }: EditProjectFormProps) {
     const [editedProject, setEditedProject] = useState(project);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         if (name === "tags") {
             setEditedProject({ ...editedProject, [name]: value.split(";") });
+        } else if (name === "public") {
+            setEditedProject({ ...editedProject, [name]: value === "Public" });
         } else {
             setEditedProject({ ...editedProject, [name]: value });
         }
@@ -63,6 +67,26 @@ export default function EditProjectForm({
                     value={editedProject.tags?.join(";") ?? ""}
                     onChange={handleChange}
                 />
+                <select
+                    name="public"
+                    value={editedProject.public ? "Public" : "Private"}
+                    onChange={handleChange}
+                    className="form-control"
+                >
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+                {project.status !== "published" && (
+                    <select
+                        name="status"
+                        value={editedProject.status}
+                        onChange={handleChange}
+                        className="form-control"
+                    >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select>
+                )}
                 <button type="submit">Save</button>
                 <button type="button" onClick={onCancel}>
                     Cancel

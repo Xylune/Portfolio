@@ -10,3 +10,6 @@ export type Project = {
     updatedAt: string;
     publishedAt: string | null;
 }
+
+export type AddProjectProps = Omit<Project, "UUID" | "createdAt" | "updatedAt" | "publishedAt">;
+export type UpdateProjectProps = Omit<Project, "UUID" | "createdAt" | "updatedAt" | "publishedAt">;

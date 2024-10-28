@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Project as ProjectProps } from "./types";
+import { AddProjectProps } from "./types";
 
 type AddProjectFormProps = {
-    onAddProject: (project: ProjectProps) => void;
+    onAddProject: (project: AddProjectProps) => void;
 };
 
 export default function AddProjectForm(props: AddProjectFormProps) {
@@ -25,17 +25,12 @@ export default function AddProjectForm(props: AddProjectFormProps) {
         )
             return;
         const project = {
-            UUID: crypto.randomUUID(),
             name: projectName,
             description: projectDescription,
             version: projectVersion,
             tags: projectTags.split(";").map((tag) => tag.trim()),
             status: projectStatus as "draft" | "published",
             public: projectPublic,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            publishedAt:
-                projectStatus === "published" ? new Date().toISOString() : null,
         };
 
         onAddProject(project);
@@ -102,8 +97,8 @@ export default function AddProjectForm(props: AddProjectFormProps) {
                     value={projectStatus}
                     onChange={(e) => setProjectStatus(e.target.value)}
                 >
-                    <option value="Draft">Draft</option>
-                    <option value="Publish">Publish</option>
+                    <option value="draft">Draft</option>
+                    <option value="published">Publish</option>
                 </select>
                 <button type="submit" id="submit">
                     Submit
