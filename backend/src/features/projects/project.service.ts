@@ -1,5 +1,6 @@
+import { Result } from "@/types";
 import { projectRepository, ProjectRepository } from "./project.repository";
-import { CreateProject, UpdateProject } from "./project.schema";
+import { CreateProject, Project, UpdateProject, validateCreateProject } from "./project.schema";
 
 
 export const createProjectService = (projectRepository: ProjectRepository) => {
@@ -12,11 +13,21 @@ export const createProjectService = (projectRepository: ProjectRepository) => {
         return projectRepository.getById(id);
     };
 
-    const create = async (data: CreateProject) => {
+    const create = async (data: CreateProject): Promise<Result<Project>> => {
+        const validationResult = validateCreateProject(data);
+        if (!validationResult.success) {
+            const errorMessage = validationResult.error.errors.map(e => e.message).join(', ');
+            return {success: false, error: {code: 'BAD_REQUEST', message: errorMessage}};
+        }
         return projectRepository.create(data);
     };
 
-    const update = async (data: UpdateProject) => {
+    const update = async (data: UpdateProject): Promise<Result<Project>> => {
+        const validationResult = validateCreateProject(data);
+        if (!validationResult.success) {
+            const errorMessage = validationResult.error.errors.map(e => e.message).join(', ');
+            return {success: false, error: {code: 'BAD_REQUEST', message: errorMessage}};
+        }
         return projectRepository.update(data);
     };
     

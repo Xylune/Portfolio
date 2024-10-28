@@ -1,3 +1,4 @@
+import { string } from "zod";
 import { Project, ProjectFromDB } from "./project.schema";
 
 
@@ -35,7 +36,7 @@ export const fromDb = (data: ProjectFromDB) => {
         name: data.name,
         description: data.description,
         version: data.version,
-        tags: data.tags.split(';'),
+        tags: data.tags.split(';') as [string, ...string[]],
         public: data.public,
         createdAt: new Date(data.created_at).toISOString(),
         updatedAt: new Date(data.updated_at).toISOString(),
