@@ -93,7 +93,7 @@ app.patch("api/projects/:UUID", async (c) => {
     return c.json({ message: "Project not found" }, { status: 404 });
 }); 
 
-app.route("/v3/projects", projectController);
+app.route("api/v3/projects", projectController);
 
 const port = 3999;
 console.log(`Server is running on port ${port}`);

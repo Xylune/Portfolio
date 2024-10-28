@@ -3,7 +3,10 @@ export type Project = {
     name: string;
     description: string;
     version: string;
-    tags?: string[];
-    visibility: "Public" | "Private";
+    tags: string[];
+    status: "draft" | "published";
+    public: boolean;
     createdAt: string;
+    updatedAt: string;
+    publishedAt: string | null;
 }

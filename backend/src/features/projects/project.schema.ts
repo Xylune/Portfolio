@@ -6,9 +6,12 @@ export const projectSchema = z.object({
     description: z.string().min(1, {message: "Description cannot be empty"}),
     version: z.string().min(1, {message: "Version cannot be empty"}),
     tags: z.array(z.string()).nonempty({message: "Tags cannot be empty"}),
+    status: z.enum(["draft", "published"]),
     public: z.boolean(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
+    publishedAt: z.string().datetime().nullable(),
+    
 });
 
 export const projectFromDBSchema = z.object({
@@ -17,20 +20,25 @@ export const projectFromDBSchema = z.object({
     description: z.string(),
     version: z.string(),
     tags: z.string(),
+    status: z.enum(["draft", "published"]),
     public: z.boolean(),
     created_at: z.string(),
     updated_at: z.string(),
+    published_at: z.string().datetime().nullable(),
+
 });
 
 export const createProjectSchema = projectSchema.omit({ 
     UUID: true, 
     createdAt: true, 
-    updatedAt: true 
+    updatedAt: true,
+    publishedAt: true
 });
 
 export const updateProjectSchema = projectSchema.omit({
     createdAt: true, 
-    updatedAt: true
+    updatedAt: true,
+    publishedAt: true
 });
 
 export type Project = z.infer<typeof projectSchema>;

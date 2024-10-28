@@ -88,8 +88,8 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
             console.log("Converted project data:", project);
 
             const query = db.prepare(`
-                INSERT INTO projects (id, name, description, version, tags, public, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO projects (id, name, description, version, tags, status, public, created_at, updated_at, published_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `);
 
             console.log("Query:", query);
@@ -100,9 +100,11 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
                 project.description,
                 project.version,
                 project.tags,
+                project.status,
                 project.public? 1 : 0,
                 project.created_at,
-                project.updated_at
+                project.updated_at,
+                project.published_at
             )
 
             return {
@@ -146,8 +148,10 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
                     description = ?, 
                     version = ?, 
                     tags = ?, 
+                    status = ?,
                     public = ?, 
-                    updated_at = ?
+                    updated_at = ?,
+                    published_at = ?
                 WHERE id = ?
             `);
 
@@ -156,8 +160,10 @@ export const createProjectRepository = (db: DB): ProjectRepository => {
                 project.description,
                 project.version,
                 project.tags,
+                project.status,
                 project.public? 1 : 0,
                 project.updated_at,
+                project.published_at,
                 project.id
             )
 

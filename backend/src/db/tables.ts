@@ -8,9 +8,11 @@ export const createTables = (db: DB) => {
     description TEXT NOT NULL,
     version TEXT NOT NULL,
     tags TEXT NOT NULL,
+    status TEXT NOT NULL,
     public BOOLEAN NOT NULL,
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at TEXT NOT NULL,
+    published_at TEXT NULL
   );
 `);
 };

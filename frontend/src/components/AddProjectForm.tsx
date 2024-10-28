@@ -11,7 +11,8 @@ export default function AddProjectForm(props: AddProjectFormProps) {
     const [projectDescription, setProjectDescription] = useState("");
     const [projectVersion, setProjectVersion] = useState("");
     const [projectTags, setProjectTags] = useState("");
-    const [projectVisibility, setProjectVisibility] = useState("Public");
+    const [projectPublic, setProjectPublic] = useState(false);
+    const [projectStatus, setProjectStatus] = useState("draft");
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -20,7 +21,7 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             !projectDescription ||
             !projectVersion ||
             !projectTags ||
-            !projectVisibility
+            !projectStatus
         )
             return;
         const project = {
@@ -29,15 +30,21 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             description: projectDescription,
             version: projectVersion,
             tags: projectTags.split(";").map((tag) => tag.trim()),
-            visibility: projectVisibility as "Public" | "Private",
+            status: projectStatus as "draft" | "published",
+            public: projectPublic,
             createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            publishedAt:
+                projectStatus === "published" ? new Date().toISOString() : null,
         };
+
         onAddProject(project);
         setProjectName("");
         setProjectDescription("");
         setProjectVersion("");
         setProjectTags("");
-        setProjectVisibility("Public");
+        setProjectPublic(false);
+        setProjectStatus("draft");
     };
 
     return (
@@ -77,14 +84,26 @@ export default function AddProjectForm(props: AddProjectFormProps) {
                     onChange={(e) => setProjectTags(e.target.value)}
                 />
                 <select
-                    id="projectVisibility"
-                    name="projectVisibility"
+                    id="projectPublic"
+                    name="projectPublic"
                     className="form-control"
-                    value={projectVisibility}
-                    onChange={(e) => setProjectVisibility(e.target.value)}
+                    value={projectPublic ? "Public" : "Private"}
+                    onChange={(e) =>
+                        setProjectPublic(e.target.value === "Public")
+                    }
                 >
                     <option value="Public">Public</option>
                     <option value="Private">Private</option>
+                </select>
+                <select
+                    id="projectStatus"
+                    name="projectStatus"
+                    className="form-control"
+                    value={projectStatus}
+                    onChange={(e) => setProjectStatus(e.target.value)}
+                >
+                    <option value="Draft">Draft</option>
+                    <option value="Publish">Publish</option>
                 </select>
                 <button type="submit" id="submit">
                     Submit

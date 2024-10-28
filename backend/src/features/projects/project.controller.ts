@@ -27,6 +27,7 @@ export const createProjectController = (projectService: ProjectService) => {
     });
 
     app.post("/", async (c) => {
+        console.log("Received data:", c.req.json());
         const project = await c.req.json();
         const result = await projectService.create(project);
 

@@ -148,3 +148,11 @@ form {
     outline: none;
   }
 }
+
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  margin: 1rem 0;
+}

@@ -9,6 +9,7 @@ export const createProject = (project: Partial<Project>) => {
         UUID: createId(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        publishedAt: project.status === "published" ? new Date().toISOString() : null,
         ...project,
     };
 }
@@ -24,9 +25,11 @@ export const toDb = (data: Partial<Project>) => {
         description: project.description ?? "",
         version: project.version ?? "",
         tags: data.tags?.join(';') ?? "",
+        status: project.status ?? "draft",
         public: project.public ?? false,
         created_at: project.createdAt,
         updated_at: project.updatedAt,
+        published_at: project.publishedAt ?? null,
     };
 }
 
@@ -37,8 +40,10 @@ export const fromDb = (data: ProjectFromDB) => {
         description: data.description,
         version: data.version,
         tags: data.tags.split(';') as [string, ...string[]],
+        status: data.status,
         public: data.public,
         createdAt: new Date(data.created_at).toISOString(),
         updatedAt: new Date(data.updated_at).toISOString(),
+        publishedAt: data.published_at ? new Date(data.published_at).toISOString() : null,
     };
 };
