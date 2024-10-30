@@ -5,7 +5,7 @@ export const projectSchema = z.object({
     name: z.string().min(3, {message: "Name must be atleast 3 characters long"}),
     description: z.string().min(1, {message: "Description cannot be empty"}),
     version: z.string().min(1, {message: "Version cannot be empty"}),
-    tags: z.array(z.string()).nonempty({message: "Tags cannot be empty"}),
+    tags: z.array(z.string().min(1, {message: "Tags cannot be empty"})).nonempty({message: "Tags cannot be empty"}),
     status: z.enum(["draft", "published"]),
     public: z.boolean(),
     createdAt: z.string().datetime(),

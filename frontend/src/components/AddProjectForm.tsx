@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AddProjectProps } from "./types";
+import { validateCreateProject } from "../helpers/schema";
 
 type AddProjectFormProps = {
     onAddProject: (project: AddProjectProps) => void;
@@ -16,24 +17,24 @@ export default function AddProjectForm(props: AddProjectFormProps) {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        if (
-            !projectName ||
-            !projectDescription ||
-            !projectVersion ||
-            !projectTags ||
-            !projectStatus
-        )
-            return;
-        const project = {
+
+        const result = validateCreateProject({
             name: projectName,
             description: projectDescription,
             version: projectVersion,
-            tags: projectTags.split(";").map((tag) => tag.trim()),
-            status: projectStatus as "draft" | "published",
+            tags: projectTags.split(";").map((t) => t.trim()),
+            status: projectStatus,
             public: projectPublic,
-        };
+        });
+        if (!result.success) {
+            console.error(
+                "Validation failed:",
+                result.error.errors.map((e) => e.message).join(", ")
+            );
+            return;
+        }
 
-        onAddProject(project);
+        onAddProject(result.data);
         setProjectName("");
         setProjectDescription("");
         setProjectVersion("");

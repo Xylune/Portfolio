@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import { Project as ProjectProps } from "./types";
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
 
 export default function Project(
     props: Readonly<PropsWithChildren<ProjectProps>>
@@ -19,7 +19,10 @@ export default function Project(
 
     const formatDate = (isoString: string) => {
         const date = new Date(isoString);
-        return format(date, "PP HH:mm"); // Example format: "Jan 1, 2020, 12:00 AM"
+        return formatDistance(date, new Date(), {
+            addSuffix: true,
+            includeSeconds: true,
+        });
     };
 
     return (

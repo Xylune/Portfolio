@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Project as ProjectProps } from "./types";
+import { validateUpdateProject } from "../helpers/schema";
 
 type EditProjectFormProps = {
     project: ProjectProps;
@@ -29,13 +30,16 @@ export default function EditProjectForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (
-            !editedProject.name ||
-            !editedProject.description ||
-            !editedProject.version ||
-            !editedProject.tags
-        )
+        const result = validateUpdateProject(editedProject);
+
+        if (!result.success) {
+            console.error(
+                "Validation failed:",
+                result.error.errors.map((e) => e.message).join(", ")
+            );
             return;
+        }
+
         onSave(editedProject);
     };
 

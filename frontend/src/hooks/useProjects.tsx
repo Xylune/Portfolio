@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ofetch } from "ofetch";
 import { endpointsV3 } from "../config/urls";
 import { AddProjectProps, Project as ProjectProps } from "../components/types";
+import { validateProjects } from "../helpers/schema";
 
 export function useProjects() {
     const [projects, setProjects] = useState<ProjectProps[]>([]);
@@ -14,8 +15,13 @@ export function useProjects() {
     const fetchProjects = async () => {
         try {
             setLoading(true);
-            const data: ProjectProps[] = await ofetch(endpointsV3);
-            setProjects(data);
+            const data = validateProjects(await ofetch(endpointsV3));
+            if (!data.success) {
+                throw new Error(
+                    data.error.errors.map((e) => e.message).join(", ")
+                );
+            }
+            setProjects(data.data);
         } catch (error) {
             console.error("Failed to fetch projects;", error);
             setError("Failed to fetch projects");
